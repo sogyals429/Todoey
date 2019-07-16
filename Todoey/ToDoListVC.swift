@@ -10,7 +10,7 @@ import UIKit
 
 class ToDoListVC: UITableViewController {
     
-    let itemArray = ["Book Movie","Buy Tickets","Order Food"]
+    var itemArray = ["Book Movie","Buy Tickets","Order Food"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +36,6 @@ class ToDoListVC: UITableViewController {
     //MARK:- TableView Delegate Methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(itemArray[indexPath.row])
         tableView.deselectRow(at: indexPath, animated: true)
         if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark{
             tableView.cellForRow(at: indexPath)?.accessoryType = .none
@@ -47,5 +46,30 @@ class ToDoListVC: UITableViewController {
         
     }
     
+    
+    //MARK:- Add New Tasks
+    
+    @IBAction func addBtnPressed(_ sender: UIBarButtonItem) {
+        
+        var textField = UITextField()
+        let alert = UIAlertController(title: "Add New Item", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            if(textField.text != nil){
+                self.itemArray.append(textField.text!)
+                self.tableView.reloadData()
+            }else{
+                self.dismiss(animated: true, completion: nil )
+            }
+        }
+        
+        alert.addTextField { (alertTxtField) in
+            alertTxtField.placeholder = "Add New Item"
+            textField = alertTxtField
+        }
+        
+        alert.addAction(action)
+        present(alert,animated: true,completion: nil)
+    }
 }
 

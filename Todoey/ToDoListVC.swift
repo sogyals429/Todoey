@@ -11,11 +11,15 @@ import UIKit
 class ToDoListVC: UITableViewController {
     
     var itemArray = ["Book Movie","Buy Tickets","Order Food"]
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         tableView.separatorStyle = .none
+        if let items = defaults.array(forKey: "ToDoListArray") as? [String]{
+            itemArray = items
+        }
     }
     
     
@@ -57,6 +61,7 @@ class ToDoListVC: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             if(textField.text != nil){
                 self.itemArray.append(textField.text!)
+                self.defaults.set(self.itemArray, forKey: "ToDoListArray")
                 self.tableView.reloadData()
             }else{
                 self.dismiss(animated: true, completion: nil )
